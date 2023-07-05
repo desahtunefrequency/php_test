@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form id="registrationForm">
+        <input type="hidden" id="userId">
+        <label for="fullname">Full Name:</label><br>
+        <input type="text" id="fullname" name="fullname"><br>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Register">
+        <button type="button" id="updateButton">Update</button>
+        <button type="button" id="deleteButton">Delete</button>
+    </form>
+    <h2>User List</h2>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>

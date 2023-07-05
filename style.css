@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label, input {
+    margin-bottom: 10px;
+    display: block;
+}
+
+#userTable {
+    width: 100%;
+}
+
+#userTable th, #userTable td {
+    width: 33%;
+    padding: 10px;
+    text-align: left;
+}
