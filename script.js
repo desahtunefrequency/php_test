@@ -1,3 +1,31 @@
+document.getElementById('updateButton').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    var userId = document.getElementById('userId').value;
+    var fullname = document.getElementById('fullname').value;
+    var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+
+    var formData = new FormData();
+    formData.append('fullname', fullname);
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('id', userId);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api.php', true);
+    xhr.onload = function() {
+        if (this.status == 200) {
+            loadUsers();
+            clearFormFields();
+        }
+    }
+    xhr.send(formData);
+});
+
+
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -7,90 +35,77 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
 
-    var params = 'fullname=' + fullname + '&username=' + username + '&email=' + email + '&password=' + password;
-
+    var formData = new FormData();
+    formData.append('fullname', fullname);
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
     if (userId) {
-        params += '&id=' + userId;
+        formData.append('id', userId);
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', userId ? 'update.php' : 'register.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
+    xhr.open('POST', 'api.php', true);
     xhr.onload = function() {
         if (this.status == 200) {
-            alert(userId ? 'User updated successfully' : 'User registered successfully');
-            loadUserList();
+            loadUsers();
             clearFormFields();
-        } else {
-            alert('An error occurred');
         }
-    };
-
-    xhr.send(params);
+    }
+    xhr.send(formData);
 });
 
-document.getElementById('updateButton').addEventListener('click', function() {
-    document.getElementById('registrationForm').dispatchEvent(new Event('submit'));
-});
+document.getElementById('userTable').addEventListener('click', function(event) {
+    if (event.target.tagName === 'TD') {
+        var id = event.target.parentElement.id;
+        var fullname = event.target.parentElement.querySelector('.fullname').textContent;
+        var username = event.target.parentElement.querySelector('.username').textContent;
+        var email = event.target.parentElement.querySelector('.email').textContent;
 
-document.getElementById('deleteButton').addEventListener('click', function() {
-    var userId = document.getElementById('userId').value;
-
-    if (userId) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'delete.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        xhr.onload = function() {
-            if (this.status == 200) {
-                alert('User deleted successfully');
-                loadUserList();
-                clearFormFields();
-            } else {
-                alert('An error occurred');
-            }
-        };
-
-        xhr.send('id=' + userId);
+        document.getElementById('userId').value = id;
+        document.getElementById('fullname').value = fullname;
+        document.getElementById('username').value = username;
+        document.getElementById('email').value = email;
     }
 });
 
-function loadUserList() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'users.php', true);
+document.getElementById('deleteButton').addEventListener('click', function(event) {
+    var id = document.getElementById('userId').value;
 
+    var formData = new FormData();
+    formData.append('id', id);
+    formData.append('_method', 'DELETE');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api.php', true);
+    xhr.onload = function() {
+        if (this.status == 200) {
+            loadUsers();
+            clearFormFields();
+        }
+    }
+    xhr.send(formData);
+});
+
+function loadUsers() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'api.php', true);
     xhr.onload = function() {
         if (this.status == 200) {
             var users = JSON.parse(this.responseText);
             var output = '';
-
             for (var i in users) {
-                output += '<tr>' +
-                    '<td>' + users[i].id + '</td>' +
-                    '<td>' + users[i].fullname + '</td>' +
-                    '<td>' + users[i].username + '</td>' +
-                    '<td>' + users[i].email + '</td>' +
+                output += '<tr id="' + users[i].id + '">' +
+                    '<td class="fullname">' + users[i].fullname + '</td>' +
+                    '<td class="username">' + users[i].username + '</td>' +
+                    '<td class="email">' + users[i].email + '</td>' +
                     '</tr>';
             }
-
-            document.getElementById('userTable').getElementsByTagName('tbody')[0].innerHTML = output;
+            document.getElementById('userTable').querySelector('tbody').innerHTML = output;
         }
-    };
-
+    }
     xhr.send();
 }
-
-loadUserList();
-
-document.getElementById('userTable').getElementsByTagName('tbody')[0].addEventListener('click', function(event) {
-    var cells = event.target.parentNode.getElementsByTagName('td');
-
-    document.getElementById('userId').value = cells[0].innerText;
-    document.getElementById('fullname').value = cells[1].innerText;
-    document.getElementById('username').value = cells[2].innerText;
-    document.getElementById('email').value = cells[3].innerText;
-});
 
 function clearFormFields() {
     document.getElementById('userId').value = '';
@@ -99,3 +114,5 @@ function clearFormFields() {
     document.getElementById('email').value = '';
     document.getElementById('password').value = '';
 }
+
+loadUsers();
