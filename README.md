@@ -27,9 +27,19 @@ The data is stored in a MariaDB database.
 ## Setup
 
 1. Clone this repository to your local machine.
-2. Set up a MariaDB database and update the database connection details in the PHP files.
-3. Run the SQL script in `database.sql` to create the `users` table.
-4. Serve the application using a PHP server.
+2. Set up a MariaDB database.
+3. Create a `.env` file in the root of your project and add your database credentials:
+
+    ```
+    DB_HOST=your_database_host
+    DB_NAME=your_database_name
+    DB_USER=your_database_user
+    DB_PASS=your_database_password
+    ```
+
+4. Update the PHP files to use the credentials from the `.env` file.
+5. Run the SQL script in `database.sql` to create the `users` table.
+6. Serve the application using a PHP server.
 
 ## Usage
 
@@ -50,8 +60,4 @@ You can view a live demo of the application at [https://php.iml-pack.com/](https
 2. The application allows users to update their email to an invalid email. Email validation should be added to prevent this.
 
 3. A "Clear Form" button should be added to allow users to easily clear all the fields in the form.
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
