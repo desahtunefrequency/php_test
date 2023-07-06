@@ -39,6 +39,18 @@ To update a user, click on the user's row in the table. The user's data will be 
 
 To delete a user, click on the user's row in the table and then click the "Delete" button.
 
+## Demo
+
+You can view a live demo of the application at [https://php.iml-pack.com/](https://php.iml-pack.com/).
+
+## Known Issues and Future Enhancements
+
+1. The application currently does not display a message if a user tries to register with a username or email that already exists in the database. This feature should be added to improve user experience.
+
+2. The application allows users to update their email to an invalid email. Email validation should be added to prevent this.
+
+3. A "Clear Form" button should be added to allow users to easily clear all the fields in the form.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
